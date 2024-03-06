@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { unauthorizedAxios } from "../axios/axios";
+import BrowserTitleBar from "../components/BrowserTitleBar";
 
 function Login() {
   const location = useLocation();
@@ -56,6 +57,8 @@ function Login() {
   return (
     <>
       <div className=""><Toaster /></div>
+
+      <BrowserTitleBar title={"Login"} />
 
       <section className="space-y-4">
         <h1 className="pb-2 text-4xl bg-yellow-400">Login Page</h1>

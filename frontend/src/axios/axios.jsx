@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const domain = "http://localhost:8000";
+// const domain = "http://localhost:8000";
+const domain = "https://merntestbackend-6sih.onrender.com";
 
 const baseURL = `${domain}/api/v1`;
 

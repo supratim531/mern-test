@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { authorizedAxios } from "../axios/axios";
 import toast from "react-hot-toast";
 import { convertToBase64 } from "../utils/convertToBase64";
+import BrowserTitleBar from "../components/BrowserTitleBar";
 
 function CreateEmployee() {
   const course1 = useRef(null);
@@ -108,72 +109,76 @@ function CreateEmployee() {
   }
 
   return (
-    <div className="">
-      <h1 className="pb-2 text-4xl bg-yellow-400">Create Employee</h1>
-      <form onSubmit={submitEmployeeDetails} className="m-4 py-4 px-10 inline-flex flex-col gap-4 rounded shadow-md outline outline-1 outline-slate-200 shadow-slate-400">
-        <div className="flex justify-between items-center gap-x-10">
-          <label className="whitespace-nowrap font-medium text-gray-900">Name</label>
-          <input
-            onChange={handleEmployeeChange}
-            name="f_Name"
-            type="text"
-            className="w-full block px-3 py-2 rounded outline outline-1 outline-slate-400"
-            required={true}
-          />
-        </div>
-        <div className="flex justify-between items-center gap-x-10">
-          <label className="whitespace-nowrap font-medium text-gray-900">Email</label>
-          <input
-            onChange={handleEmployeeChange}
-            name="f_Email"
-            type="text"
-            className="w-full block px-3 py-2 rounded outline outline-1 outline-slate-400"
-            required={true}
-          />
-        </div>
-        <div className="flex justify-between items-center gap-x-10">
-          <label className="whitespace-nowrap font-medium text-gray-900">Mobile No</label>
-          <input
-            onChange={handleEmployeeChange}
-            name="f_Mobile"
-            type="text"
-            className="w-full block px-3 py-2 rounded outline outline-1 outline-slate-400"
-            required={true}
-          />
-        </div>
-        <div className="flex justify-between items-center gap-x-10">
-          <label className="whitespace-nowrap font-medium text-gray-900">Designation</label>
-          <select onChange={handleEmployeeChange} name="f_Designation" className="w-full py-2 rounded outline outline-1 outline-slate-400">
-            <option value="HR">HR</option>
-            <option value="Manager">Manager</option>
-            <option value="sales">sales</option>
-          </select>
-        </div>
-        <div className="flex justify-between items-center gap-x-10">
-          <label className="whitespace-nowrap font-medium text-gray-900">Gender</label>
+    <>
+      <BrowserTitleBar title={"Create A New Employee"} />
+
+      <div className="">
+        <h1 className="pb-2 text-4xl bg-yellow-400">Create Employee</h1>
+        <form onSubmit={submitEmployeeDetails} className="m-4 py-4 px-10 inline-flex flex-col gap-4 rounded shadow-md outline outline-1 outline-slate-200 shadow-slate-400">
           <div className="flex justify-between items-center gap-x-10">
-            <div className=""><label htmlFor="M" className="cursor-pointer">M</label> <input onChange={handleEmployeeChange} type="radio" name="f_gender" id="M" value={"M"} required={true} /></div>
-            <div className=""><label htmlFor="F" className="cursor-pointer">F</label> <input onChange={handleEmployeeChange} type="radio" name="f_gender" id="F" value={"F"} required={true} /></div>
+            <label className="whitespace-nowrap font-medium text-gray-900">Name</label>
+            <input
+              onChange={handleEmployeeChange}
+              name="f_Name"
+              type="text"
+              className="w-full block px-3 py-2 rounded outline outline-1 outline-slate-400"
+              required={true}
+            />
           </div>
-        </div>
-        <div className="flex justify-between items-center gap-x-10">
-          <label htmlFor="f_Course" className="whitespace-nowrap font-medium text-gray-900">Course</label>
           <div className="flex justify-between items-center gap-x-10">
-            <div className=""><label htmlFor="MCA" className="cursor-pointer">MCA</label> <input ref={course1} onChange={handleCourseChange} type="checkbox" name="f_Course" id={"MCA"} value={"MCA"} /></div>
-            <div className=""><label htmlFor="BCA" className="cursor-pointer">BCA</label> <input ref={course2} onChange={handleCourseChange} type="checkbox" name="f_Course" id={"BCA"} value={"BCA"} /></div>
-            <div className=""><label htmlFor="BSC" className="cursor-pointer">BSC</label> <input ref={course3} onChange={handleCourseChange} type="checkbox" name="f_Course" id={"BSC"} value={"BSC"} /></div>
+            <label className="whitespace-nowrap font-medium text-gray-900">Email</label>
+            <input
+              onChange={handleEmployeeChange}
+              name="f_Email"
+              type="text"
+              className="w-full block px-3 py-2 rounded outline outline-1 outline-slate-400"
+              required={true}
+            />
           </div>
-        </div>
-        <div className="flex justify-between items-center gap-x-10">
-          <label className="whitespace-nowrap font-medium text-gray-900">Img Upload</label>
-          <input type="file" onChange={handleImageChange} required={true} />
-        </div>
-        <div className="">
-          <img className="w-40" src={imageFileB64} alt="" />
-        </div>
-        <div className=""><button className="w-full px-6 py-2 rounded bg-green-300">Submit</button></div>
-      </form>
-    </div>
+          <div className="flex justify-between items-center gap-x-10">
+            <label className="whitespace-nowrap font-medium text-gray-900">Mobile No</label>
+            <input
+              onChange={handleEmployeeChange}
+              name="f_Mobile"
+              type="text"
+              className="w-full block px-3 py-2 rounded outline outline-1 outline-slate-400"
+              required={true}
+            />
+          </div>
+          <div className="flex justify-between items-center gap-x-10">
+            <label className="whitespace-nowrap font-medium text-gray-900">Designation</label>
+            <select onChange={handleEmployeeChange} name="f_Designation" className="w-full py-2 rounded outline outline-1 outline-slate-400">
+              <option value="HR">HR</option>
+              <option value="Manager">Manager</option>
+              <option value="sales">sales</option>
+            </select>
+          </div>
+          <div className="flex justify-between items-center gap-x-10">
+            <label className="whitespace-nowrap font-medium text-gray-900">Gender</label>
+            <div className="flex justify-between items-center gap-x-10">
+              <div className=""><label htmlFor="M" className="cursor-pointer">M</label> <input onChange={handleEmployeeChange} type="radio" name="f_gender" id="M" value={"M"} required={true} /></div>
+              <div className=""><label htmlFor="F" className="cursor-pointer">F</label> <input onChange={handleEmployeeChange} type="radio" name="f_gender" id="F" value={"F"} required={true} /></div>
+            </div>
+          </div>
+          <div className="flex justify-between items-center gap-x-10">
+            <label htmlFor="f_Course" className="whitespace-nowrap font-medium text-gray-900">Course</label>
+            <div className="flex justify-between items-center gap-x-10">
+              <div className=""><label htmlFor="MCA" className="cursor-pointer">MCA</label> <input ref={course1} onChange={handleCourseChange} type="checkbox" name="f_Course" id={"MCA"} value={"MCA"} /></div>
+              <div className=""><label htmlFor="BCA" className="cursor-pointer">BCA</label> <input ref={course2} onChange={handleCourseChange} type="checkbox" name="f_Course" id={"BCA"} value={"BCA"} /></div>
+              <div className=""><label htmlFor="BSC" className="cursor-pointer">BSC</label> <input ref={course3} onChange={handleCourseChange} type="checkbox" name="f_Course" id={"BSC"} value={"BSC"} /></div>
+            </div>
+          </div>
+          <div className="flex justify-between items-center gap-x-10">
+            <label className="whitespace-nowrap font-medium text-gray-900">Img Upload</label>
+            <input type="file" onChange={handleImageChange} required={true} />
+          </div>
+          <div className="">
+            <img className="w-40" src={imageFileB64} alt="" />
+          </div>
+          <div className=""><button className="w-full px-6 py-2 rounded bg-green-300">Submit</button></div>
+        </form>
+      </div>
+    </>
   );
 }
 

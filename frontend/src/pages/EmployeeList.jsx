@@ -5,6 +5,7 @@ import { authorizedAxios, domain } from "../axios/axios";
 import toast from "react-hot-toast";
 import { useContext } from "react";
 import RootContext from "../contexts/RootContext";
+import BrowserTitleBar from "../components/BrowserTitleBar";
 
 function EmployeeList() {
   const navigate = useNavigate();
@@ -123,6 +124,8 @@ function EmployeeList() {
 
   return (
     <>
+      <BrowserTitleBar title={"List of All Employees"} />
+
       {
         // (employees.length === 0 && filteredEmployees.length === 0) ?
         //   <div className="pt-4 font-medium text-center text-4xl text-slate-400">No Employee found</div> :

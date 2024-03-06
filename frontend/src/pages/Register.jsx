@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { unauthorizedAxios } from "../axios/axios";
+import BrowserTitleBar from "../components/BrowserTitleBar";
 
 function Register() {
   const navigate = useNavigate();
@@ -50,6 +51,8 @@ function Register() {
   return (
     <>
       <div className=""><Toaster /></div>
+
+      <BrowserTitleBar title={"Register"} />
 
       <section className="space-y-4">
         <h1 className="pb-2 text-4xl bg-yellow-400">Signup Page</h1>
