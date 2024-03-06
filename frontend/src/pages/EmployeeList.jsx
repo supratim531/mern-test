@@ -103,8 +103,8 @@ function EmployeeList() {
         );
       }
     },
-    { name: "Name", selector: row => row?.f_Name },
-    { name: "Email", selector: row => <a className="text-blue-600" href={`mailto:${row?.f_Email}`}>{row?.f_Email}</a> },
+    { name: "Name", selector: row => <span className="whitespace-break-spaces">{row?.f_Name}</span> },
+    { name: "Email", selector: row => <a className="whitespace-break-spaces text-blue-600" href={`mailto:${row?.f_Email}`}>{row?.f_Email}</a> },
     { name: "Mobile No", selector: row => row?.f_Mobile },
     { name: "Designation", selector: row => row?.f_Designation },
     { name: "gender", selector: row => row?.f_gender },
