@@ -9,7 +9,7 @@ const app = express();
 const PORT = 8000 || process.env.PORT;
 
 app.use(cors({
-  origin: "http://localhost:3000"
+  origin: ["http://localhost:3000", "https://merntestfrontend.vercel.app"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
