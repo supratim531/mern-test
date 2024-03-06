@@ -9,30 +9,53 @@ import BrowserTitleBar from "../components/BrowserTitleBar";
 
 function EmployeeList() {
   const navigate = useNavigate();
-  const rootContext = useContext(RootContext);
   const token = localStorage.getItem("token");
+  const rootContext = useContext(RootContext);
 
   const [search, setSearch] = useState("");
+  const [targetId, setTargetId] = useState(null);
   const [employees, setEmployees] = useState([]);
+  const [isFetching, setIsFetching] = useState(true);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
 
   const deleteEmployee = async id => {
     try {
-      const res = await authorizedAxios(token).delete(`/employee/${id}`);
+      let res = await authorizedAxios(token).delete(`/employee/${id}`);
       console.log({ res });
-      const data = res?.data;
+      let data = res?.data;
       console.log({ data });
-      toast.success(data?.message);
-      getAllEmployees();
+      const deleteMessage = data?.message;
+
+      // getAllEmployees();
+
+      res = await authorizedAxios(token).get("/employee");
+      console.log({ res });
+      data = res?.data;
+      console.log({ data });
+      toast.success(deleteMessage);
+      rootContext?.setIsProcessing(false);
+      setEmployees(data?.employees);
+      setFilteredEmployees(data?.employees);
     } catch (err) {
       console.log({ err });
-      toast.error(err?.response?.data?.message);
+      rootContext?.setIsProcessing(false);
+
+      if (err?.response?.data?.message) {
+        toast.error(err?.response?.data?.message);
+      } else {
+        toast.error("Server Error: Server is offline");
+      }
     }
   }
 
   const deleteEmployeeById = (id) => {
+    setTargetId(id);
+
     if (window.confirm("Are you sure?")) {
+      rootContext?.setIsProcessing(true);
       deleteEmployee(id);
+    } else {
+      setTargetId(null);
     }
   }
 
@@ -42,6 +65,7 @@ function EmployeeList() {
       console.log({ res });
       const data = res?.data;
       console.log({ data });
+      setIsFetching(false);
       setEmployees(data?.employees);
       setFilteredEmployees(data?.employees);
     } catch (err) {
@@ -91,7 +115,11 @@ function EmployeeList() {
         return (
           <div className="flex justify-between items-center gap-4">
             <div className="text-blue-600"><Link to={`/edit-employee/${row?.f_Id}`}>Edit</Link></div>
-            <button onClick={() => deleteEmployeeById(row?.f_Id)} className="text-red-600">Delete</button>
+            {
+              rootContext?.isProcessing && (row?.f_Id === targetId) ?
+                <button onClick={() => deleteEmployeeById(row?.f_Id)} disabled className="italic opacity-70 text-red-600">Deleting...</button> :
+                <button onClick={() => deleteEmployeeById(row?.f_Id)} className="text-red-600">Delete</button>
+            }
           </div>
         );
       }
@@ -127,43 +155,43 @@ function EmployeeList() {
       <BrowserTitleBar title={"List of All Employees"} />
 
       {
-        // (employees.length === 0 && filteredEmployees.length === 0) ?
-        //   <div className="pt-4 font-medium text-center text-4xl text-slate-400">No Employee found</div> :
-        <DataTable
-          title={
-            <div className="flex justify-end">
-              <div className="flex justify-between items-center text-base gap-x-4">
-                <div className="">Total Count: {filteredEmployees.length}</div>
-                <Link to={"/create-employee"}><button className="px-4 py-2 rounded bg-green-300">Create Employee</button></Link>
+        isFetching ?
+          <div className="text-2xl">Fetching records of all employees...</div> :
+          <DataTable
+            title={
+              <div className="flex justify-end">
+                <div className="flex justify-between items-center text-base gap-x-4">
+                  <div className="">Total Count: {filteredEmployees.length}</div>
+                  <Link to={"/create-employee"}><button className="px-4 py-2 rounded bg-green-300">Create Employee</button></Link>
+                </div>
               </div>
-            </div>
-          }
-          paginationRowsPerPageOptions={[5, 10, 20, 50]}
-          columns={columns}
-          data={filteredEmployees}
-          pagination
-          fixedHeader
-          fixedHeaderScrollHeight="385px"
-          selectableRowsHighlight
-          highlightOnHover
-          className="data-table-scroll-none"
-          subHeader
-          subHeaderComponent={
-            <div className="w-full mr-2">
-              <div className="px-1 py-1 flex justify-end w-full">
-                <input
-                  type="text"
-                  className="w-full sm:w-[50%] xl:w-[35%] px-2.5 py-1.5 rounded outline outline-1 outline-sky-400 text-slate-800 focus:outline-2 focus:shadow-md placeholder:text-slate-600"
-                  name="table-search"
-                  id="table-search"
-                  placeholder="Enter Search Keyword"
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                />
+            }
+            paginationRowsPerPageOptions={[5, 10, 20, 50]}
+            columns={columns}
+            data={filteredEmployees}
+            pagination
+            fixedHeader
+            fixedHeaderScrollHeight="385px"
+            selectableRowsHighlight
+            highlightOnHover
+            className="data-table-scroll-none"
+            subHeader
+            subHeaderComponent={
+              <div className="w-full mr-2">
+                <div className="px-1 py-1 flex justify-end w-full">
+                  <input
+                    type="text"
+                    className="w-full sm:w-[50%] xl:w-[35%] px-2.5 py-1.5 rounded outline outline-1 outline-sky-400 text-slate-800 focus:outline-2 focus:shadow-md placeholder:text-slate-600"
+                    name="table-search"
+                    id="table-search"
+                    placeholder="Enter Search Keyword"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                  />
+                </div>
               </div>
-            </div>
-          }
-        />
+            }
+          />
       }
     </>
   );

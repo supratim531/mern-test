@@ -13,7 +13,7 @@ function Navbar() {
         <li><NavLink to={"/employee-list"} className="">Employee List</NavLink></li>
       </ul>
       <div className="flex justify-between items-center gap-x-20">
-        <div className=""><b>Welcome</b> {rootContext?.username}</div>
+        <div className=""><b>Welcome</b> {rootContext?.username ? rootContext?.username : <i>loading...</i>}</div>
         <button onClick={() => {
           rootContext.setIsLogin(false);
           localStorage.clear();

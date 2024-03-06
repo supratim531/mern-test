@@ -1,14 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { authorizedAxios } from "../axios/axios";
 import toast from "react-hot-toast";
 import { convertToBase64 } from "../utils/convertToBase64";
 import BrowserTitleBar from "../components/BrowserTitleBar";
+import RootContext from "../contexts/RootContext";
 
 function CreateEmployee() {
   const course1 = useRef(null);
   const course2 = useRef(null);
   const course3 = useRef(null);
   const token = localStorage.getItem("token");
+  const rootContext = useContext(RootContext);
 
   const [imageFile, setImageFile] = useState(null);
   const [imageFileB64, setImageFileB64] = useState(null);
@@ -33,10 +35,17 @@ function CreateEmployee() {
       console.log({ res });
       const data = res?.data;
       console.log({ data });
+      rootContext?.setIsProcessing(false);
       toast.success(data?.message);
     } catch (err) {
       console.log({ err });
-      toast.error(err?.response?.data?.message);
+      rootContext?.setIsProcessing(false);
+
+      if (err?.response?.data?.message) {
+        toast.error(err?.response?.data?.message);
+      } else {
+        toast.error("Server Error: Server is offline");
+      }
     }
   }
 
@@ -56,6 +65,7 @@ function CreateEmployee() {
       formData.append("f_Designation", employee.f_Designation);
       formData.append("f_gender", employee.f_gender);
       formData.append("f_Course", employee.f_Course);
+      rootContext?.setIsProcessing(true);
       createEmployee(formData);
     }
   }
@@ -175,7 +185,11 @@ function CreateEmployee() {
           <div className="">
             <img className="w-40" src={imageFileB64} alt="" />
           </div>
-          <div className=""><button className="w-full px-6 py-2 rounded bg-green-300">Submit</button></div>
+          {
+            rootContext?.isProcessing ?
+              <div className=""><button disabled className="italic cursor-not-allowed w-full px-6 py-2 font-medium opacity-50 rounded bg-green-300">Creating...</button></div> :
+              <div className=""><button className="w-full px-6 py-2 font-medium rounded bg-green-300">Submit</button></div>
+          }
         </form>
       </div>
     </>

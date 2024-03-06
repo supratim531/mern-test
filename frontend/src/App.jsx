@@ -11,6 +11,7 @@ function App() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
   const [username, setUsername] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const getCurrentUserDetails = async () => {
     try {
@@ -48,7 +49,8 @@ function App() {
 
   const contextData = {
     username,
-    isLogin, setIsLogin
+    isLogin, setIsLogin,
+    isProcessing, setIsProcessing
   }
 
   return (

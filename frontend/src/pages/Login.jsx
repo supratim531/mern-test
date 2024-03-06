@@ -7,6 +7,7 @@ import BrowserTitleBar from "../components/BrowserTitleBar";
 function Login() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [authPayload, setAuthPayload] = useState({
     username: "",
@@ -19,10 +20,13 @@ function Login() {
       console.log({ res });
       const data = res?.data;
       console.log({ data });
+      setIsProcessing(false);
       localStorage.setItem("token", data?.accessToken);
       navigate('/', { state: { message: data?.message } });
     } catch (err) {
       console.log({ err });
+      setIsProcessing(false);
+
       if (err?.response?.data?.message) {
         toast.error(err?.response?.data?.message);
       } else {
@@ -33,6 +37,7 @@ function Login() {
 
   const loginUser = e => {
     e.preventDefault();
+    setIsProcessing(true);
     login(authPayload);
   }
 
@@ -87,7 +92,11 @@ function Login() {
                     required={true}
                   />
                 </div>
-                <button type="submit" className="w-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 text-center bg-green-400">Login</button>
+                {
+                  isProcessing ?
+                    <button type="submit" disabled className="italic cursor-not-allowed w-full font-medium rounded-lg px-5 py-2.5 text-center opacity-50 bg-green-400">Processing...</button> :
+                    <button type="submit" className="w-full font-medium rounded-lg px-5 py-2.5 text-center bg-green-400">Login</button>
+                }
                 <p className="font-light text-gray-500">
                   Dont have an account yet?{" "}
                   <Link to={"/register"} className="font-medium text-primary-600 hover:underline">Register</Link>
